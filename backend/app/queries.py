@@ -88,8 +88,7 @@ INSERT_AIRPORT = """
 INSERT INTO Airport (Air_code, Air_Name, City, State, Country_code)
 VALUES (%s, %s, %s, %s, %s)
 """
-
-GET_AIRPLANE_TYPES = "SELECT A_ID, Company, Capacity FROM Airplane_type"
+GET_AIRPLANE_TYPES = "SELECT A_ID, Company, Capacity, A_weight FROM Airplane_type"
 INSERT_AIRPLANE_TYPE = """
 INSERT INTO Airplane_type (A_ID, Capacity, A_weight, Company)
 VALUES (%s, %s, %s, %s)

@@ -19,6 +19,7 @@ import AdminAirplaneTypesPage from './pages/AdminAirplaneTypesPage';
 import AdminRoutesPage from './pages/AdminRoutesPage';
 import AdminFlightsPage from './pages/AdminFlightsPage';
 import AdminAirFaresPage from './pages/AdminAirFaresPage';
+import AirplaneTypesPage from './pages/AirplaneTypesPage';
 
 function App() {
   return (
@@ -39,6 +40,8 @@ function App() {
           <Route path="admin/routes" element={<AdminRoutesPage />} />
           <Route path="admin/flights" element={<AdminFlightsPage />} />
           <Route path="admin/airfares" element={<AdminAirFaresPage />} />
+          <Route path="airplanes" element={<AirplaneTypesPage />} />
+          <Route path="test" element={<TestComponentsPage />} />
         </Route>
 
         {/* You could have other routes here that *don't* use the layout,

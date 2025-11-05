@@ -23,7 +23,7 @@ const AdminAirFaresPage = () => {
       }
     };
     loadData();
-  }, []); // Reload if success changes
+  }, []); 
   
   const handleChange = (e) => setFormData({ ...formData, [e.target.name]: e.target.value });
 
@@ -52,7 +52,8 @@ const AdminAirFaresPage = () => {
 
   return (
     <Container fluid>
-      <h1>Admin: Create AirFare</h1>
+      {/* This is the correct title, the stray text is gone */}
+      <h1>Admin: Create AirFare</h1> 
       <Card className="shadow-sm border-0 mt-4">
         <Card.Body>
           <Form noValidate validated={validated} onSubmit={handleSubmit}>

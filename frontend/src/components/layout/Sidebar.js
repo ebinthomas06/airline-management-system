@@ -8,10 +8,10 @@ const sidebarStyle = {
   width: '250px',
   backgroundColor: '#0f172a', // Dark blue/slate color
   padding: '1rem',
-  height: '100vh',
   position: 'fixed',
   top: 0,
   left: 0,
+  overflowY: 'auto',
 };
 
 const linkStyle = {
@@ -33,7 +33,7 @@ const Sidebar = () => {
   return (
     <Nav style={sidebarStyle} className="flex-column">
       <h3 style={{ color: 'white', padding: '0 1rem 1rem 1rem' }}>
-        ✈️ Airline Portal
+         Airline Portal
       </h3>
       
       <NavLink 
@@ -63,6 +63,12 @@ const Sidebar = () => {
       >
         Employees
       </NavLink>
+      <NavLink 
+        to="/airplanes" 
+        style={({ isActive }) => (isActive ? { ...linkStyle, ...activeLinkStyle } : linkStyle)}
+      >
+        Airplanes
+      </NavLink>
       
       <hr style={{ borderColor: '#e2e8f0' }} />
       <NavLink 
@@ -90,17 +96,19 @@ const Sidebar = () => {
         Admin: Routes
       </NavLink>
       <NavLink 
-        to="/admin/flights" 
-        style={({ isActive }) => (isActive ? { ...linkStyle, ...activeLinkStyle } : linkStyle)}
-      >
-        Admin: Flights
-      </NavLink>
-      <NavLink 
         to="/admin/airfares" 
         style={({ isActive }) => (isActive ? { ...linkStyle, ...activeLinkStyle } : linkStyle)}
       >
         Admin: AirFares
       </NavLink>
+      <NavLink 
+        to="/admin/flights" 
+        style={({ isActive }) => (isActive ? { ...linkStyle, ...activeLinkStyle } : linkStyle)}
+      >
+        Admin: Flights
+      </NavLink>
+      
+      
     </Nav>
   );
 };
