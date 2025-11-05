@@ -1,0 +1,23 @@
+# Virtual Environment
+venv/
+/venv/
+*.venv
+.venv
+
+# Secrets
+.env
+*.env
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# IDE configuration folders
+.vscode/
+.idea/
+
+# OS-specific files
+.DS_Store
+Thumbs.db
