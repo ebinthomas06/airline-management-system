@@ -1,19 +1,15 @@
-# Query to get all flight details for the search page
+# --- FLIGHT & BOOKING QUERIES (Unchanged) ---
+
 GET_FLIGHTS_QUERY = """
 SELECT 
-    f.Flight_ID, 
-    at.Company, 
-    r.Take_Off_point, 
-    r.Destination,
-    f.Departure,
-    f.Arrival
+    f.Flight_ID, at.Company, r.Take_Off_point, r.Destination,
+    f.Departure, f.Arrival
 FROM Flight AS f
 JOIN Airplane_type AS at ON f.A_ID = at.A_ID
 JOIN Travels_on AS t ON f.Flight_ID = t.Flight_ID
 JOIN Route AS r ON t.Route_ID = r.Route_ID
 """
 
-# Query to insert a new passenger
 INSERT_PASSENGER_QUERY = """
 INSERT INTO Passengers 
     (Ps_Name, Address, Age, Sex, Contacts, Flight_ID)
@@ -21,10 +17,43 @@ VALUES
     (%s, %s, %s, %s, %s, %s)
 """
 
-# Query to insert a new transaction
 INSERT_TRANSACTION_QUERY = """
 INSERT INTO Transactions
     (TS_ID, Booking_Date, Departure_Date, TS_Type, Emp_ID, Ps_ID, Flight_ID, Charge_Amount)
 VALUES
     (%s, CURDATE(), (SELECT Flight_date FROM Flight WHERE Flight_ID = %s), %s, %s, %s, %s, %s)
+"""
+
+# --- NEW EMPLOYEE QUERIES ---
+
+# 1. Insert into the base Employees table
+INSERT_EMPLOYEE_BASE = """
+INSERT INTO Employees
+    (Emp_ID, E_Name, Address, Age, Email_ID, Contact, Air_code, Employee_Type)
+VALUES
+    (%s, %s, %s, %s, %s, %s, %s, %s)
+"""
+
+# 2. Insert into the Pilots sub-table
+INSERT_PILOT = """
+INSERT INTO Pilots
+    (Emp_ID, License_Number, Medical_Expiry_Date, Flight_Hours)
+VALUES
+    (%s, %s, %s, %s)
+"""
+
+# 3. Insert into the CabinCrew sub-table
+INSERT_CABINCREW = """
+INSERT INTO CabinCrew
+    (Emp_ID, Certification_ID, Service_Training_Level)
+VALUES
+    (%s, %s, %s)
+"""
+
+# 4. Insert into the GroundCrew sub-table
+INSERT_GROUNDCREW = """
+INSERT INTO GroundCrew
+    (Emp_ID, Role, Security_Clearance_Level)
+VALUES
+    (%s, %s, %s)
 """

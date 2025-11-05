@@ -1,7 +1,8 @@
 from pydantic import BaseModel
-from typing import Optional
+from typing import Optional, Union
+from datetime import date # Import date
 
-# Model for the data you send *out* for a flight
+# --- FLIGHT & BOOKING MODELS (Unchanged) ---
 class FlightOut(BaseModel):
     flight_id: str
     company: str
@@ -10,7 +11,6 @@ class FlightOut(BaseModel):
     departure: str
     arrival: str
 
-# Model for the data you receive *in* for a new passenger
 class PassengerIn(BaseModel):
     ps_name: str
     address: str
@@ -18,17 +18,59 @@ class PassengerIn(BaseModel):
     sex: str
     contacts: str
 
-# Model for the data you receive *in* for a new booking
 class BookingIn(BaseModel):
     flight_id: str
     passenger: PassengerIn
-    # You would also add payment info here
-    # For now, we'll auto-assign other IDs
-    emp_id: int = 1234 # Hardcoding for this example
-    charge_amount: int # This should match a Fare_ID from AirFare
+    emp_id: int = 1234
+    charge_amount: int
 
-# Model for the data you send *out* after a successful booking
 class BookingOut(BaseModel):
     status: str
     booking_id: int
     passenger_id: int
+
+
+# --- NEW EMPLOYEE MODELS ---
+
+# Base model with common employee data
+class EmployeeBase(BaseModel):
+    emp_id: int
+    e_name: str
+    address: str
+    age: int
+    email_id: str
+    contact: str
+    air_code: str # The airport they are based at
+
+# --- IN models (for creating new employees) ---
+
+class PilotIn(EmployeeBase):
+    license_number: str
+    medical_expiry_date: date
+    flight_hours: int = 0
+
+class CabinCrewIn(EmployeeBase):
+    certification_id: str
+    service_training_level: str # e.g., 'First', 'Business'
+
+class GroundCrewIn(EmployeeBase):
+    role: str # e.g., 'Baggage', 'Gate Agent'
+    security_clearance_level: int
+
+# --- OUT models (for retrieving employee data) ---
+
+class PilotOut(EmployeeBase):
+    employee_type: str
+    license_number: str
+    medical_expiry_date: date
+    flight_hours: int
+
+class CabinCrewOut(EmployeeBase):
+    employee_type: str
+    certification_id: str
+    service_training_level: str
+
+class GroundCrewOut(EmployeeBase):
+    employee_type: str
+    role: str
+    security_clearance_level: int
