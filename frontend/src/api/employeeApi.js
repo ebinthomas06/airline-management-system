@@ -41,3 +41,13 @@ export const createCabinCrew = async (crewData) => {
 export const createGroundCrew = async (crewData) => {
   return postData(`${API_BASE_URL}/employees/groundcrew/`, crewData);
 };
+
+export const getAllEmployees = async () => {
+  const response = await fetch(`${API_BASE_URL}/employees/`);
+  
+  if (!response.ok) {
+    throw new Error('Failed to fetch all employees.');
+  }
+  
+  return await response.json();
+};

@@ -1,3 +1,4 @@
+// src/components/booking/PassengerForm.js
 import React, { useState } from 'react';
 import { Form, Button, Row, Col } from 'react-bootstrap';
 
@@ -92,7 +93,8 @@ const PassengerForm = ({ onSubmit }) => {
         
         <Form.Group as={Col} md="4" controlId="formContacts">
           <Form.Label>Contact Number</Form.Label>
-          <Form.Coo
+          {/* --- THIS WAS THE LINE WITH THE TYPO --- */}
+          <Form.Control
             required
             type="text"
             name="contacts"

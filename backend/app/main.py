@@ -16,7 +16,7 @@ from app.queries import (
     INSERT_AIRPORT,GET_AIRPLANE_TYPES, INSERT_AIRPLANE_TYPE,   
     GET_ROUTES, INSERT_ROUTE, GET_FLIGHT_IDS,     
     INSERT_FLIGHT, INSERT_AIRFARE,                
-    INSERT_CAN_LAND, INSERT_TRAVELS_ON
+    INSERT_CAN_LAND, INSERT_TRAVELS_ON, GET_ALL_EMPLOYEES
 )
 
 from fastapi.middleware.cors import CORSMiddleware
@@ -314,8 +314,7 @@ def create_ground_crew(crew: GroundCrewIn):
 
 # You can add a similar endpoint for GroundCrew
 
-@app.get("/employees/{emp_id}", 
-         response_model=Union[PilotOut, CabinCrewOut, GroundCrewOut, EmployeeBase])
+@app.get("/employees/{emp_id}",)
 def get_employee_details(emp_id: int):
     """
     Gets the full details for a specific employee.
@@ -365,6 +364,24 @@ def get_employee_details(emp_id: int):
         # If type is NULL or not one of the above
         return base_employee
 
+    except mysql.connector.Error as err:
+        raise HTTPException(status_code=500, detail=f"Database error: {err}")
+    finally:
+        if cursor: cursor.close()
+        if cnx and cnx.is_connected(): cnx.close()
+        
+@app.get("/employees/")
+def get_all_employees():
+    """
+    Gets a summary list of all employees.
+    """
+    cnx = None
+    cursor = None
+    try:
+        cnx = get_db_connection()
+        cursor = cnx.cursor(dictionary=True)
+        cursor.execute(GET_ALL_EMPLOYEES)
+        return cursor.fetchall()
     except mysql.connector.Error as err:
         raise HTTPException(status_code=500, detail=f"Database error: {err}")
     finally:

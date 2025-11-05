@@ -118,3 +118,9 @@ VALUES (%s, %s, %s, %s)
 # --- Junction Tables (We'll need these too) ---
 INSERT_CAN_LAND = "INSERT INTO Can_Land (Air_code, Flight_ID) VALUES (%s, %s)"
 INSERT_TRAVELS_ON = "INSERT INTO Travels_on (Route_ID, Flight_ID) VALUES (%s, %s)"
+
+GET_ALL_EMPLOYEES = """
+SELECT Emp_ID, E_Name, Employee_Type, Air_code, Contact 
+FROM Employees
+ORDER BY E_Name
+"""
