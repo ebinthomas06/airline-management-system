@@ -64,3 +64,57 @@ INSERT INTO GroundCrew
 VALUES
     (%s, %s, %s)
 """
+
+GET_FLIGHTS_TODAY_COUNT = "SELECT COUNT(*) AS count FROM Flight WHERE DATE(Flight_date) = CURDATE()"
+
+GET_EMPLOYEES_COUNT = "SELECT COUNT(*) AS count FROM Employees"
+
+GET_BOOKINGS_MONTH_COUNT = """
+SELECT COUNT(*) AS count FROM Transactions 
+WHERE MONTH(Booking_Date) = MONTH(CURDATE()) 
+AND YEAR(Booking_Date) = YEAR(CURDATE())
+"""
+
+GET_AIRPORTS_COUNT = "SELECT COUNT(*) AS count FROM Airport"
+
+GET_COUNTRIES = "SELECT Country_code, Country_Name FROM Countries"
+
+INSERT_COUNTRY = """
+INSERT INTO Countries (Country_code, Country_Name)
+VALUES (%s, %s)
+"""
+
+INSERT_AIRPORT = """
+INSERT INTO Airport (Air_code, Air_Name, City, State, Country_code)
+VALUES (%s, %s, %s, %s, %s)
+"""
+
+GET_AIRPLANE_TYPES = "SELECT A_ID, Company, Capacity FROM Airplane_type"
+INSERT_AIRPLANE_TYPE = """
+INSERT INTO Airplane_type (A_ID, Capacity, A_weight, Company)
+VALUES (%s, %s, %s, %s)
+"""
+
+# --- Route ---
+GET_ROUTES = "SELECT Route_ID, Take_Off_point, Destination FROM Route"
+INSERT_ROUTE = """
+INSERT INTO Route (Route_ID, Take_Off_point, Destination, R_type)
+VALUES (%s, %s, %s, %s)
+"""
+
+# --- Flight ---
+GET_FLIGHT_IDS = "SELECT Flight_ID FROM Flight" # For AirFare form
+INSERT_FLIGHT = """
+INSERT INTO Flight (Flight_ID, Departure, Arrival, Flight_date, A_ID)
+VALUES (%s, %s, %s, %s, %s)
+"""
+
+# --- AirFare ---
+INSERT_AIRFARE = """
+INSERT INTO AirFare (Fare_ID, Charge_Amount, Description, Flight_ID)
+VALUES (%s, %s, %s, %s)
+"""
+
+# --- Junction Tables (We'll need these too) ---
+INSERT_CAN_LAND = "INSERT INTO Can_Land (Air_code, Flight_ID) VALUES (%s, %s)"
+INSERT_TRAVELS_ON = "INSERT INTO Travels_on (Route_ID, Flight_ID) VALUES (%s, %s)"

@@ -12,7 +12,13 @@ import NewBookingPage from './pages/NewBookingPage';
 import EmployeesPage from './pages/EmployeesPage';
 import NewEmployeePage from './pages/NewEmployeePage';
 import EmployeeDetailPage from './pages/EmployeeDetailPage';
-import TestComponentsPage from './pages/TestComponentsPage'; // Your test page
+import TestComponentsPage from './pages/TestComponentsPage';
+import AdminCountriesPage from './pages/AdminCountriesPage';
+import AdminAirportsPage from './pages/AdminAirportsPage';
+import AdminAirplaneTypesPage from './pages/AdminAirplaneTypesPage';
+import AdminRoutesPage from './pages/AdminRoutesPage';
+import AdminFlightsPage from './pages/AdminFlightsPage';
+import AdminAirFaresPage from './pages/AdminAirFaresPage';
 
 function App() {
   return (
@@ -27,6 +33,12 @@ function App() {
           <Route path="employees/new" element={<NewEmployeePage />} />
           <Route path="employees/:emp_id" element={<EmployeeDetailPage />} />
           <Route path="test" element={<TestComponentsPage />} /> {/* Test route */}
+          <Route path="admin/countries" element={<AdminCountriesPage />} />
+          <Route path="admin/airports" element={<AdminAirportsPage />} />
+          <Route path="admin/airplane-types" element={<AdminAirplaneTypesPage />} />
+          <Route path="admin/routes" element={<AdminRoutesPage />} />
+          <Route path="admin/flights" element={<AdminFlightsPage />} />
+          <Route path="admin/airfares" element={<AdminAirFaresPage />} />
         </Route>
 
         {/* You could have other routes here that *don't* use the layout,

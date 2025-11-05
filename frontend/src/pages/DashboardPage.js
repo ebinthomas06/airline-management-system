@@ -1,28 +1,52 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react'; // Import useState, useEffect
 import { Container, Row, Col } from 'react-bootstrap';
 import StatCard from '../components/ui/StatCard';
 import { motion } from 'framer-motion';
 
-// Animation for the container
+// --- (Import API) ---
+import { getDashboardStats } from '../api/dashboardApi';
+
+// (Animation variants are unchanged)
 const containerVariants = {
   hidden: { opacity: 0 },
   visible: {
     opacity: 1,
-    transition: {
-      staggerChildren: 0.1 // Staggers the animation of children
-    }
+    transition: { staggerChildren: 0.1 }
   }
 };
-
 const itemVariants = {
   hidden: { opacity: 0, y: 20 },
   visible: { opacity: 1, y: 0 }
 };
 
 const DashboardPage = () => {
+  // --- (Add State) ---
+  const [stats, setStats] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+  // We won't show an error, just "..."
+
+  // --- (Add useEffect to fetch data) ---
+  useEffect(() => {
+    const loadStats = async () => {
+      try {
+        setIsLoading(true);
+        const data = await getDashboardStats();
+        setStats(data);
+      } catch (err) {
+        console.error("Failed to load stats:", err);
+        // Don't set an error, we'll just show '...'
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    
+    loadStats();
+  }, []); // Empty array means run once on load
+
   return (
     <Container fluid>
       <Row className="mb-4">
+        {/* ... (Title and Subtitle are unchanged) ... */}
         <Col>
           <motion.h1 
             initial={{ opacity: 0, y: -20 }}
@@ -43,19 +67,20 @@ const DashboardPage = () => {
       </Row>
 
       <motion.div
-        as={Row} // Use motion.div and tell it to render as a Row
+        as={Row}
         variants={containerVariants}
         initial="hidden"
         animate="visible"
       >
+        {/* --- (Update StatCards) --- */}
         <motion.div 
-          as={Col} // Render as Col
+          as={Col} 
           md={6} lg={3} className="mb-3" 
-          variants={itemVariants} // Apply the item animation
+          variants={itemVariants}
         >
           <StatCard 
             title="Today's Flights" 
-            value="24" 
+            value={isLoading ? "..." : (stats?.flightsToday ?? "0")} 
             subtitle="Active departures" 
             icon="✈️" 
           />
@@ -68,7 +93,7 @@ const DashboardPage = () => {
         >
           <StatCard 
             title="Total Employees" 
-            value="342" 
+            value={isLoading ? "..." : (stats?.totalEmployees ?? "0")} 
             subtitle="Across all departments" 
             icon="👥" 
           />
@@ -81,7 +106,7 @@ const DashboardPage = () => {
         >
           <StatCard 
             title="Bookings" 
-            value="1,829" 
+            value={isLoading ? "..." : (stats?.bookingsThisMonth ?? "0")} 
             subtitle="This month" 
             icon="🎫" 
           />
@@ -94,11 +119,12 @@ const DashboardPage = () => {
         >
           <StatCard 
             title="Airports" 
-            value="47" 
+            value={isLoading ? "..." : (stats?.totalAirports ?? "0")} 
             subtitle="Destinations served" 
             icon="📍" 
           />
         </motion.div>
+
       </motion.div>
     </Container>
   );

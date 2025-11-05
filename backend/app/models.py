@@ -78,3 +78,39 @@ class GroundCrewOut(EmployeeBase):
     employee_type: str
     role: str
     security_clearance_level: int
+    
+class CountryIn(BaseModel):
+    country_code: int
+    country_name: str
+
+class AirportIn(BaseModel):
+    air_code: str
+    air_name: str
+    city: str
+    state: str
+    country_code: int
+    
+class AirplaneTypeIn(BaseModel):
+    a_id: int
+    capacity: int
+    a_weight: int
+    company: str
+
+class RouteIn(BaseModel):
+    route_id: int
+    take_off_point: str
+    destination: str
+    r_type: str
+
+class FlightIn(BaseModel):
+    flight_id: str
+    departure: str  # Assuming a string like '2025-11-10 14:30:00'
+    arrival: str    # Assuming a string like '2025-11-10 16:30:00'
+    flight_date: date
+    a_id: int
+
+class AirFareIn(BaseModel):
+    fare_id: int
+    charge_amount: int
+    description: str
+    flight_id: str

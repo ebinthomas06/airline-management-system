@@ -63,6 +63,44 @@ const Sidebar = () => {
       >
         Employees
       </NavLink>
+      
+      <hr style={{ borderColor: '#e2e8f0' }} />
+      <NavLink 
+        to="/admin/countries" 
+        style={({ isActive }) => (isActive ? { ...linkStyle, ...activeLinkStyle } : linkStyle)}
+      >
+        Admin: Countries
+      </NavLink>
+      <NavLink 
+        to="/admin/airports" 
+        style={({ isActive }) => (isActive ? { ...linkStyle, ...activeLinkStyle } : linkStyle)}
+      >
+        Admin: Airports
+      </NavLink>
+      <NavLink 
+        to="/admin/airplane-types" 
+        style={({ isActive }) => (isActive ? { ...linkStyle, ...activeLinkStyle } : linkStyle)}
+      >
+        Admin: Airplane Types
+      </NavLink>
+      <NavLink 
+        to="/admin/routes" 
+        style={({ isActive }) => (isActive ? { ...linkStyle, ...activeLinkStyle } : linkStyle)}
+      >
+        Admin: Routes
+      </NavLink>
+      <NavLink 
+        to="/admin/flights" 
+        style={({ isActive }) => (isActive ? { ...linkStyle, ...activeLinkStyle } : linkStyle)}
+      >
+        Admin: Flights
+      </NavLink>
+      <NavLink 
+        to="/admin/airfares" 
+        style={({ isActive }) => (isActive ? { ...linkStyle, ...activeLinkStyle } : linkStyle)}
+      >
+        Admin: AirFares
+      </NavLink>
     </Nav>
   );
 };
