@@ -19,11 +19,18 @@ VALUES
 
 INSERT_TRANSACTION_QUERY = """
 INSERT INTO Transactions
-    (TS_ID, Booking_Date, Departure_Date, TS_Type, Emp_ID, Ps_ID, Flight_ID, Charge_Amount)
+    (TS_ID, Booking_Date, Departure_Date, TS_Type, Emp_ID, Ps_ID, Flight_ID, Fare_ID)
 VALUES
     (%s, CURDATE(), (SELECT Flight_date FROM Flight WHERE Flight_ID = %s), %s, %s, %s, %s, %s)
 """
+# Note: The last column is now Fare_ID, matching the SQL in Step 1.
 
+# --- NEW QUERY ---
+GET_FARES_FOR_FLIGHT_QUERY = """
+SELECT Fare_ID, Charge_Amount, Description, Flight_ID
+FROM AirFare
+WHERE Flight_ID = %s
+"""
 # --- NEW EMPLOYEE QUERIES ---
 
 # 1. Insert into the base Employees table

@@ -22,14 +22,18 @@ class BookingIn(BaseModel):
     flight_id: str
     passenger: PassengerIn
     emp_id: int = 1234
-    charge_amount: int
+    fare_id: int
 
 class BookingOut(BaseModel):
     status: str
     booking_id: int
     passenger_id: int
 
-
+class AirFareOut(BaseModel):
+    fare_id: int
+    charge_amount: int
+    description: str
+    flight_id: str
 # --- NEW EMPLOYEE MODELS ---
 
 # Base model with common employee data

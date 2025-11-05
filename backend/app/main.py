@@ -2,27 +2,79 @@ from fastapi import FastAPI, HTTPException
 from app.database import get_db_connection
 # Import all our new models
 from app.models import (
-    FlightOut, BookingIn, BookingOut, 
+    FlightOut, BookingIn, BookingOut, AirFareOut, 
     PilotIn, CabinCrewIn, GroundCrewIn,
     PilotOut, CabinCrewOut, GroundCrewOut, EmployeeBase
 )
 # Import all our new queries
 from app.queries import (
     GET_FLIGHTS_QUERY, INSERT_PASSENGER_QUERY, INSERT_TRANSACTION_QUERY,
-    INSERT_EMPLOYEE_BASE, INSERT_PILOT, INSERT_CABINCREW, INSERT_GROUNDCREW
+    INSERT_EMPLOYEE_BASE, INSERT_PILOT, INSERT_CABINCREW, INSERT_GROUNDCREW,
+    GET_FARES_FOR_FLIGHT_QUERY
 )
+
+from fastapi.middleware.cors import CORSMiddleware
+
 import mysql.connector
 import random
 from typing import Union, Any # To handle multiple response types
 
 app = FastAPI(title="Airline Management API")
 
+origins = [
+    "http://localhost:3000",
+]
+
+# --- 3. Add the middleware to your app ---
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,  # Allows requests from http://localhost:3000
+    allow_credentials=True, # Allows cookies (if you use them)
+    allow_methods=["*"],    # Allows all methods (GET, POST, etc.)
+    allow_headers=["*"],    # Allows all headers
+)
+
 @app.get("/")
 def read_root():
     return {"message": "Welcome to the Airline Management API, bro."}
 
 # --- BOOKING & FLIGHT ENDPOINTS (Unchanged) ---
+@app.get("/flights/{flight_id}/fares/", response_model=list[AirFareOut])
+def get_flight_fares(flight_id: str):
+    """
+    Gets all available fare options (e.g., Economy, Business)
+    for a specific flight.
+    """
+    cnx = None
+    cursor = None
+    try:
+        cnx = get_db_connection()
+        if cnx is None:
+            raise HTTPException(status_code=503, detail="Database connection unavailable.")
+        
+        cursor = cnx.cursor(dictionary=True)
+        cursor.execute(GET_FARES_FOR_FLIGHT_QUERY, (flight_id,))
+        fares = cursor.fetchall()
 
+        if not fares:
+            raise HTTPException(status_code=404, detail="No fares found for this flight.")
+        
+        # Re-map keys to match Pydantic model
+        return [
+            {
+                "fare_id": f["Fare_ID"],
+                "charge_amount": f["Charge_Amount"],
+                "description": f["Description"],
+                "flight_id": f["Flight_ID"]
+            }
+            for f in fares
+        ]
+    except mysql.connector.Error as err:
+        raise HTTPException(status_code=500, detail=f"Database error: {err}")
+    finally:
+        if cursor: cursor.close()
+        if cnx and cnx.is_connected(): cnx.close()
+        
 @app.get("/flights/", response_model=list[FlightOut])
 def get_flights():
     # ... (This code is unchanged from before)
@@ -73,7 +125,7 @@ def create_booking(booking: BookingIn):
         payment_type = "Credit Card"
         transaction_data = (
             new_ts_id, booking.flight_id, payment_type, booking.emp_id,
-            new_passenger_id, booking.flight_id, booking.charge_amount
+            new_passenger_id, booking.flight_id, booking.fare_id
         )
         cursor.execute(INSERT_TRANSACTION_QUERY, transaction_data)
         
